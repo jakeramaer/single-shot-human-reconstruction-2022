@@ -1,0 +1,3 @@
+# technical_question
+
+init
