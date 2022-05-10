@@ -22,6 +22,7 @@ In the next section I will give a high-level overview of the the theory behind I
 the ICON network works like this...
 
 ## Limitations of ICON
+- No consistency in scale / position between successive models
 - Human only, no equiptment (this can most likely be changed)
 - Blur
 - Background removal
