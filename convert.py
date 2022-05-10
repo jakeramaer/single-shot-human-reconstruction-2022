@@ -39,4 +39,4 @@ else:
 
 print('Launching ICON...')
 os.chdir('/content/technical_question/ICON/apps')
-subprocess.Popen("python infer.py -cfg ../configs/icon-filter.yaml -loop_smpl 100 -loop_cloth 0 -colab -gpu 0 -export_video -in_dir /content/technical_question/png -out_dir /content/technical_question/results".split())
+subprocess.Popen("python infer.py -cfg ../configs/icon-filter.yaml -loop_smpl 100 -loop_cloth 0 -colab -gpu 0 -export_video -in_dir /content/technical_question/png -out_dir /content/technical_question/results/output".split())
