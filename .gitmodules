@@ -1,0 +1,3 @@
+[submodule "ICON"]
+	path = ICON
+	url = https://github.com/YuliangXiu/ICON.git
