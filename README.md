@@ -2,7 +2,8 @@
 
 ## TO DO
 - Summarise ICON
-- Build functionality for mp4 -> png conversion
+- Build functionality for mp4 -> png conversion DONE
+- Saving to results bit
 
 As a precursor, this was a great technical question! I had a lot of fun experimenting with different networks and having a play with the results. \
 I do not own a CUDA enabled GPU, so most of this work was completed using Google Colab.
