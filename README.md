@@ -1,7 +1,4 @@
 # technical_question 
-## TO DO
-- Build on it (HuMoR / FLAG)
-- Saving to results bit DONE
 As a precursor, this was a great technical question! I had a lot of fun experimenting with different networks and having a play with the results.
 I do not own a CUDA enabled GPU, therefore my implementation runs through a Colab notebook -> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/17zqx4rOEP1035AjPfDE5JyaloIB06oq5?usp=sharing)
 ## Survey of current SOTA
@@ -16,9 +13,9 @@ In the next section I will give a high-level overview of the the theory behind I
 ![Image of ICON Network Architecture](https://icon.is.tue.mpg.de/media/upload/architecture.png)
 The ICON architecture consists of two parts, with an optional optimisation loop:
 1.  First, we create normal predictions for the front and back side of the human:
-    - This involves inferring a SMPL-body mesh (denoted as ![equation](https://latex.codecogs.com/svg.image?M), provided by [PyMAF](https://hongwenzhang.github.io/pymaf/)) from the input image. 
-    - Then, using a differentiable renderer (denoted as ![equation](https://latex.codecogs.com/svg.image?DR)), we obtain a front and back SMPL-body normal maps (denoted as ![equation](https://latex.codecogs.com/svg.image?N^b)).
-    - Combining the SMPL-body normal maps with the original rgb image, ICON uses two trained normal prediction networks (denoted as ![equation](https://latex.codecogs.com/svg.image?G_N)) to infer front / back clothed-body normal maps.
+    - This involves inferring a SMPL-body mesh (denoted as ![equation](https://latex.codecogs.com/svg.image?\bg{white}M), provided by [PyMAF](https://hongwenzhang.github.io/pymaf/)) from the input image. 
+    - Then, using a differentiable renderer (denoted as ![equation](https://latex.codecogs.com/svg.image?\bg{white}DR)), we obtain a front and back SMPL-body normal maps (denoted as ![equation](https://latex.codecogs.com/svg.image?\bg{white}N^b)).
+    - Combining the SMPL-body normal maps with the original rgb image, ICON uses two trained normal prediction networks (denoted as ![equation](https://latex.codecogs.com/svg.image?\bg{white}G_N)) to infer front / back clothed-body normal maps.
 2. (Optional) These predicted clothed-body normal maps can be further optimised by passing them through a refinement loop, where we itteratively minimise the difference between the rendered SMPL-body normal-maps and the predicted clothed-body normal maps.
 3. When we have the final inferred clothed-body normal maps, we then predict occupancy for a query point P by feeding a local feature vector into an MLP. The local feature vector consists of:
     - The signed distance from P to the closest body point on the SMPL-body mesh.
