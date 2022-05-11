@@ -3,6 +3,8 @@ import os
 import cv2
 import sys
 import shutil
+from utils.libsimplify import simplify_mesh
+import trimesh
 
 
 # Helper Functions ###############################
@@ -28,7 +30,6 @@ def video_to_image(path, frameRate=30):
         sec = round(sec, 2)
         success = getFrame(sec)
 
-
 # Main Function ##################################
 
 print('Converting .mp4 to .png...') 
@@ -40,3 +41,13 @@ else:
 print('Launching ICON...')
 os.chdir('/content/technical_question/ICON/apps')
 subprocess.Popen("python infer.py -cfg ../configs/icon-filter.yaml -loop_smpl 100 -loop_cloth 0 -colab -gpu 0 -export_video -in_dir /content/technical_question/png -out_dir /content/technical_question/results/output".split())
+
+print('Launching FQMS...')
+for mesh in os.listdir('results/output/icon-filter/obj'):
+    if 'recon' in mesh:
+        pre_simplify_mesh = trimesh.load('results/output/icon-filter/obj/' + mesh)
+        simplified_mesh = simplify_mesh(pre_simplify_mesh)
+        mesh_out_file = 'results/output/icon-filter/obj/' + mesh.split('_')[0] + '_fqms.obj'
+        simplified_mesh.export(mesh_out_file)
+
+print('Done.')

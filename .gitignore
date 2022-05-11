@@ -1,3 +1,13 @@
 .DS_Store
 png/*
-results/ICON_5fps
+.vscode
+.pytest_cache
+.cache
+*.pyc
+*.pt
+*.so
+*.o
+*.prof
+.nfs*
+utils/libsimplify/simplify_mesh.cpp
+build
