@@ -5,6 +5,8 @@ I do not own a CUDA enabled GPU, therefore my implementation runs through a Cola
 The first phase of this question involved surveying the latest 3D human reconstruction networks, with the following conditions: 
 - The input being a single  mp4 file.
 - The output being a set of either 3D meshes or point clouds, ideally one for each frame.
+
+
 I've worked previously with ONet, PIFu, LDIF, and NeRF networks. PIFuHD was my initial first guess at a potential solution to this question as it was trained for high-detail human reconstruction (including clothing). However, it is always worth a trip to google scholar to check the forward citations. Through this I was able to find ICON, released in Feb 2022. My reasons for selecting ICON as my chosen solution are as follows:
 - ICON has a full, well documented codebase, with access to a plug-and-play Colab notebook for easy testing.
 - The ICON paper demostrates results that consistantly outperform PIFu / PIFuHD, with particularly better generalisation to dramatic / athletic poses through use of local (rather than global) features.
@@ -21,6 +23,7 @@ The ICON architecture consists of two parts, with an optional optimisation loop:
     - The signed distance from P to the closest body point on the SMPL-body mesh.
     - The [barycentric surface normal](https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/barycentric-coordinates) of the closest body point on the SMPL-body mesh.
     - A normal vector extracted from either the front or the back inferred clothed-body normal map, depending on visability.
+
 Using this architecture, we can begin building an [octree](https://iq.opengenus.org/octree/) by querying different points, which can then be converted to a mesh via marching cubes. 
 ## Advantages of ICON (Specific to Metacast)
 - Pose Generalisation
@@ -38,18 +41,21 @@ Using this architecture, we can begin building an [octree](https://iq.opengenus.
     - Retrain PyMAF on annotated fencing data (i.e. pixel perfect positions for both people and both swords for each frame of training data). This would take a long time to implement!
 - ICON reconstruction relies on PyMAF, which exposes it to PyMAF failure cases. In their words - "Though PyMAF can improve the alignment of some body parts, it remains challenging for PyMAF to correct those body parts with severe deviations, heavy occlusions, or ambuiguous limb connections."
 - ICON assumes weak perspective cameras, which makes it succeptable to failure when subjects are close to the lens / distorted. In a UFC ring subjects might get very close to cameras.
+
 ## Improvements Made
 - HuMoR / FLAG pose estimation, rather than PARE.
 - Temporal smoothing
+
 ## A brief statement on how you would write a test suite for your video converter. e.g. how would you validate that your outputs are reasonable? 
-- This is a difficult question as, at test time, we have no ground truth model for 3D IOU calculations
-- However, if we could output the inferred extrinsic camera coordinates and line up the reconstruction with the original video, we would then be able to run 2D IOU on the  gt video vs the reconstruction (this is still a bad way to measure performance, as we're only using one view)
-- To tag an output as 'reasonable' you could use a 2D IOU threshold from the perspective of the original camera. 
-- Otherwise, you could run a 3D pose estimation for (PyMAF) and use 3D IOU there.
+- At training time, I have found the best quantitative metric for evaluating outputs has been 3D IOU.
+- At test time, we have no ground truth model for 3D IOU calculations, therefore evaluation becomes more tricky.
+- However, if we could (1) output the inferred extrinsic camera coordinates and (2) line up the reconstruction silouette with the original video, we would then be able to run 2D IOU on the gt video segmentation vs the sillouette of the reconstruction.
+- This is still a poor way of measuring performance, as we're only using one view.
+- To tag an output as 'reasonable' you could use a 2D IOU threshold.
 ## Other Approaches
 As a side note - if an output 3D mesh wasn't a requirement, recent NeRF networks (https://github.com/NVlabs/instant-ngp) would definitely catch my eye:
 - NeRF networks train on a single scene, take camera coordinates as input and give 2D images as output.
 - From a realism standpoint, the detail, color and material properties (reflections, roughness etc) of NeRF's 2D outputs far outpace 3D mesh generation networks, at the cost of having no output mesh to work with.
 - Limitations:
-    - This network requires a very beefy GPU and is prone to crashes.
-    - This network requires multiple cameras to achieve good results (check this again), so the monocular video data wouldn't 
+    - This network requires a very beefy GPU and is prone to VRAM overflow related crashes.
+    - This network requires multiple cameras to achieve good results, so the monocular video data provided withthis task wouldn't be usable. 
