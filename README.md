@@ -1,14 +1,14 @@
 # Technical Question Submission 
 
-<p align="center">
-    <img src="resources/videos/ihadtodoittoem.gif" height="300" />
-</p>
-
 As a precursor, this was a great technical question! I had a lot of fun experimenting with different networks and playing around with the results.
 
 I do not own a CUDA enabled GPU, therefore my implementation runs via a Colab notebook:
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/17zqx4rOEP1035AjPfDE5JyaloIB06oq5?usp=sharing)
+
+<p align="center">
+    <img src="resources/videos/ihadtodoittoem.gif" height="300" />
+</p>
 
 ## Survey of current SOTA
 The first phase of this question involved surveying the latest 3D human reconstruction networks, with the following conditions: 
