@@ -1,6 +1,14 @@
 # technical_question 
-As a precursor, this was a great technical question! I had a lot of fun experimenting with different networks and having a play with the results.
-I do not own a CUDA enabled GPU, therefore my implementation runs through a Colab notebook -> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/17zqx4rOEP1035AjPfDE5JyaloIB06oq5?usp=sharing)
+
+<p align="center">
+    <img src="resources/videos/ihadtodoittoem.gif" height="300" />
+</p>
+
+As a precursor, this was a great technical question! I had a lot of fun experimenting with different networks and playing around with the results.
+
+I do not own a CUDA enabled GPU, therefore my implementation runs through a Colab notebook:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/17zqx4rOEP1035AjPfDE5JyaloIB06oq5?usp=sharing)
 
 ## Survey of current SOTA
 The first phase of this question involved surveying the latest 3D human reconstruction networks, with the following conditions: 
@@ -66,7 +74,7 @@ The main error of this example is that, unfortunately, I'm not strong enough to 
     - Many of the datasets used to train human reconstruction networks (RenderPeople) are limited in pose variation. 
     - Past SOTA networks suffered when exposed to 'dramatic' poses as they utilised global image features (i.e. taking the whole image into account), which overfit to poses seen during training. 
     - In contrast, ICON uses local features (generated from a combination of pose estimation and normal map prediction), which allows for better generalisation to unseen poses.
-    - As Metacast is attempting to reconstruct athletic / dynamic poses, ICON generates far more accurate results when compared to other SOTA networks. 
+    - As Metacast is attempting to reconstruct athletic / dynamic poses, ICON is the better suited network for generalisation and precision (not speed!).
 - Quality of output
     - Comparing directly to PIFu's architecture, the inclusion of a mesh-based statistical model (PyMAF) in ICON greatly reduces 'non-human' artifacts, at the expense of having a generic look to all outputs (further discussed in limitations section). This also combats the effect of image blur.
         <p float="left">
@@ -87,7 +95,7 @@ The main error of this example is that, unfortunately, I'm not strong enough to 
             <img src="resources/eval-images/missing_limbs/1.png" height="300" /> 
         </p>
     
-- ICON assumes weak perspective cameras, which makes it susceptible to failure when subjects are close to the lens / distorted. In a UFC ring subjects might get very close to cameras.
+- (nitty-gritty) ICON assumes weak perspective cameras, which makes it susceptible to failure when subjects are close to the lens / distorted. In a UFC ring subjects might get very close to cameras.
 ## Improvements Made
 The improvements that I mention in the limitations section are non-trivial, and require a whole rework of the model and / or the training data, which is beyond the scope of this exercise. 
 
@@ -110,6 +118,8 @@ The above meshes are 5.1MB and 346KB in size respectively. You can find the 'fqm
 As a side note - if an output 3D mesh wasn't a requirement, recent NeRF networks (https://github.com/NVlabs/instant-ngp) would definitely catch my eye:
 - NeRF networks train on a single scene, take camera coordinates as input and give 2D images as output.
 - From a realism standpoint, the detail, colour and material properties (reflections, roughness etc) of NeRF's 2D outputs far outpace 3D mesh generation networks, at the cost of having no output mesh to work with.
+ - NeRF is best suited to high detail video. Therefore it could work great for small-area sports (UFC), as you can get the camera close to the action. However, for large-area sports (football) the detail of the reconstruction will suffer due to the distance.
+
 - Limitations:
-    - This network requires a very beefy GPU and is prone to VRAM overflow related crashes.
-    - This network requires multiple cameras to achieve good results, so the monocular video data provided with this task wouldn't be usable. 
+    - NeRF networks require very beefy GPUs and are prone to VRAM overflow related crashes.
+    - NeRF networks require multiple cameras to achieve good results, so the monocular video data provided with this task wouldn't be usable.
