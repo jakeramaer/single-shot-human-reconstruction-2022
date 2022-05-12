@@ -7,7 +7,7 @@ I do not own a CUDA enabled GPU, therefore my implementation runs via a Colab no
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/17zqx4rOEP1035AjPfDE5JyaloIB06oq5?usp=sharing)
 
 <p align="center">
-    <img src="resources/videos/ihadtodoittoem.gif" height="300" />
+    <img src="resources/videos/hadtodoittoem.gif" height="300" />
 </p>
 
 ## Survey of current SOTA
