@@ -15,7 +15,7 @@ The first phase of this question involved surveying the latest 3D human reconstr
 - The input being a single  mp4 file.
 - The output being a set of either 3D meshes or point clouds, ideally one for each frame.
 
-I've worked previously with ONet, PIFu and NeRF networks. PIFuHD was my initial first guess at a potential solution to this question as it was trained for high-detail human reconstruction (including clothing). However, it is always worth a trip to google scholar to check the forward citations. Through this I was able to find ICON, released in Feb 2022. My reasons for selecting ICON as my chosen solution are as follows:
+I've worked previously with ONet, PIFu and NeRF networks. PIFuHD was my initial first guess at a potential solution to this question as it was trained for high-detail human reconstruction (including clothing). However, it is always worth a trip to google scholar to check forward citations. Through this I was able to find ICON (code released in Feb 2022). My reasons for selecting ICON as my chosen solution are as follows:
 - ICON has a full, well documented codebase, with access to a plug-and-play Colab notebook for easy testing.
 - The ICON paper demonstrates results that consistently outperform PIFu / PIFuHD, with particularly better generalisation to dramatic / athletic poses through use of local (rather than global) features.
 
@@ -67,7 +67,7 @@ From the above gif, we can see that the model can capture a subject (me!):
 
 The main error of this example is that, unfortunately, I'm not strong enough to hold myself up with just my head and one hand... my left arm (or right arm? difficult to tell!) should also be on the floor, but is instead confused with a chair leg, hence the outstretched arm.
 
-<mark>For all results, please visit my [drive](https://drive.google.com/drive/folders/1xygUupnc9odJoez8_j0NtFabPszJr-bD?usp=sharing). Once uncompressed, you can find the output .objs under '/content/technical_question/results/output/icon-filter/obj'. </mark>
+<mark>For all results, please visit my [drive](https://drive.google.com/drive/folders/1xygUupnc9odJoez8_j0NtFabPszJr-bD?usp=sharing). Once uncompressed, you can find the output .objs under 'icon-filter/obj'. </mark>
 
 ## Advantages of ICON (Specific to Metacast)
 - Pose Generalisation
@@ -95,6 +95,11 @@ The main error of this example is that, unfortunately, I'm not strong enough to 
             <img src="resources/eval-images/missing_limbs/1.png" height="300" /> 
         </p>
     
+- From what I gathered from the paper, ICON concerns itself only with geometry, and leaves the texturing to [SCANimate](https://scanimate.is.tue.mpg.de/). However, when viewing the .obj files in my system, I can clearly see a textured 'refine' model. There is no accompanying .mtl file, and when I open the 'refine' .obj in a text editor, there is no mention of materials, so I'm not quite sure whats going on there at the moment!
+    <p float="left">
+            <img src="resources/eval-images/colour.png" height="200"/>  
+    </p> 
+
 - (nitty-gritty) ICON assumes weak perspective cameras, which makes it susceptible to failure when subjects are close to the lens / distorted. In a UFC ring subjects might get very close to cameras.
 ## Improvements Made
 The improvements that I mention in the limitations section are non-trivial, and require a whole rework of the model and / or the training data, which is beyond the scope of this exercise. 
@@ -118,6 +123,7 @@ The above meshes are 5.1MB and 346KB in size respectively. You can find the 'fqm
 As a side note - if an output 3D mesh wasn't a requirement, recent NeRF networks (https://github.com/NVlabs/instant-ngp) would definitely catch my eye:
 - NeRF networks train on a single scene, take camera coordinates as input and give 2D images as output.
 - From a realism standpoint, the detail, colour and material properties (reflections, roughness etc) of NeRF's 2D outputs far outpace 3D mesh generation networks, at the cost of having no output mesh to work with.
+- Facebook have just released [Neural 3D Video Synthesis from Multi-view Video](https://neural-3d-video.github.io) (no code yet), which has the ability to process multi-view video, rather than just static scenes. Very exciting! 
  - NeRF is best suited to high detail video. Therefore it could work great for small-area sports (UFC), as you can get the camera close to the action. However, for large-area sports (football) the detail of the reconstruction will suffer due to the distance.
 
 - Limitations:
