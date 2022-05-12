@@ -51,7 +51,7 @@ From the above gif, we can see that the results for a well lit, well positioned 
     <img src="resources/videos/front.gif" height="400" /> 
 </p>
 
-However, one result doesn't speak for an entire video sequence. After loading up Blender (I know the technical question said use Unity, I was too late to turn back  when I realised!) and importing 35 Skateboarder models, I realised one of the disadvantages of this network was the lack consistency in scale / position between successive models. I had to manually adjust each of them so the video could run smoothly.
+However, one result doesn't speak for an entire video sequence. After loading up Blender (I know the technical question said to use Unity, it was too late to turn back when I realised!) and importing 35 Skateboarder models, I realised one of the disadvantages of this network was the lack consistency in scale / position between successive models. I had to manually adjust each of them so the video could run smoothly.
 
 You can tell from the above-left gif that, if viewing from the perspective of the camera, the motion looks very smooth. However, when panning 90 degrees away from that perspective, as shown in the above-right gif, the motion looks jagged. This is a natural consequence of using a single camera, as there are a bunch of positions a limb can be in that satisfy the 'silhouette' produced by the single camera. This issue will no doubt be mitigated by the inclusion of more views.
 
