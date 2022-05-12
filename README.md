@@ -123,3 +123,4 @@ As a side note - if an output 3D mesh wasn't a requirement, recent NeRF networks
 - Limitations:
     - NeRF networks require very beefy GPUs and are prone to VRAM overflow related crashes.
     - NeRF networks require multiple cameras to achieve good results, so the monocular video data provided with this task wouldn't be usable.
+    
