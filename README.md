@@ -123,7 +123,8 @@ The above meshes are 5.1MB and 346KB in size respectively. You can find the 'fqm
 As a side note - if an output 3D mesh wasn't a requirement, recent NeRF networks (https://github.com/NVlabs/instant-ngp) would definitely catch my eye:
 - NeRF networks train on a single scene, take camera coordinates as input and give 2D images as output.
 - From a realism standpoint, the detail, colour and material properties (reflections, roughness etc) of NeRF's 2D outputs far outpace 3D mesh generation networks, at the cost of having no output mesh to work with.
-- Facebook have just released [Neural 3D Video Synthesis from Multi-view Video](https://neural-3d-video.github.io) (no code yet), which has the ability to process multi-view video, rather than just static scenes. Very exciting! 
+- Facebook have just released [Neural 3D Video Synthesis from Multi-view Video](https://neural-3d-video.github.io) (no code yet), which has the ability to process multi-view video, rather than just static scenes. Very exciting!
+- NeRF memory footprints are tiny. Taken from the above paper - "we seek a unified space-time representation that enables continuous viewpoint and time interpolation, while being able to represent and entire multi-view video sequence of 10 seconds in as little as 28MB".
  - NeRF is best suited to high detail video. Therefore it could work great for small-area sports (UFC), as you can get the camera close to the action. However, for large-area sports (football) the detail of the reconstruction will suffer due to the distance.
 
 - Limitations:
