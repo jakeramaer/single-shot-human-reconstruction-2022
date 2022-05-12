@@ -47,8 +47,8 @@ Here I will provide a few talking points from my results using ICON.
 
 From the above gif, we can see that the results for a well lit, well positioned subject are reasonable (aside from the missing limb, discussed in limitations section)
 <p align="center">
-    <img src="resources/videos/side.gif" height="300" />
-    <img src="resources/videos/front.gif" height="300" /> 
+    <img src="resources/videos/side.gif" height="400" />
+    <img src="resources/videos/front.gif" height="400" /> 
 </p>
 
 However, one result doesn't speak for an entire video sequence. After loading up Blender (I know the technical question said use Unity, I was too late to turn back  when I realised!) and importing 35 Skateboarder models, I realised one of the disadvantages of this network was the lack consistency in scale / position between successive models. I had to manually adjust each of them so the video could run smoothly.
