@@ -40,14 +40,14 @@ else:
 
 print('Launching ICON...')
 os.chdir('/content/technical_question/ICON/apps')
-subprocess.Popen("python infer.py -cfg ../configs/icon-filter.yaml -loop_smpl 100 -loop_cloth 0 -colab -gpu 0 -export_video -in_dir /content/technical_question/png -out_dir /content/technical_question/results/output".split())
+subprocess.Popen("python infer.py -cfg ../configs/icon-filter.yaml -loop_smpl 100 -loop_cloth 0 -colab -gpu 0 -export_video -in_dir /content/technical_question/png -out_dir /content/technical_question/results/output".split()).wait()
 
-print('Launching FQMS...')
-for mesh in os.listdir('results/output/icon-filter/obj'):
+print('Launching FQMS')
+for mesh in os.listdir('/content/technical_question/results/output/icon-filter/obj'):
     if 'recon' in mesh:
-        pre_simplify_mesh = trimesh.load('results/output/icon-filter/obj/' + mesh)
+        pre_simplify_mesh = trimesh.load('/content/technical_question/results/output/icon-filter/obj/' + mesh)
         simplified_mesh = simplify_mesh(pre_simplify_mesh)
-        mesh_out_file = 'results/output/icon-filter/obj/' + mesh.split('_')[0] + '_fqms.obj'
+        mesh_out_file = '/content/technical_question/results/output/icon-filter/obj/' + mesh.split('_')[0] + '_fqms.obj'
         simplified_mesh.export(mesh_out_file)
 
 print('Done.')
