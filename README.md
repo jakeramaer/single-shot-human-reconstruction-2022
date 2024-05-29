@@ -7,7 +7,7 @@ I do not own a CUDA enabled GPU, therefore my implementation runs via a Colab no
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/17zqx4rOEP1035AjPfDE5JyaloIB06oq5?usp=sharing)
 
 <p align="center">
-    <img src="resources/videos/hadtodoittoem.gif" height="300" />
+    <img src="resources/videos/hadtodoittoem.gif" width="800" />
 </p>
 
 ## Survey of current SOTA
@@ -23,7 +23,7 @@ In the next section I will give a high-level overview of the theory behind ICON 
 ## ICON architecture rundown
 
 <p align="center">
-    <img src="https://icon.is.tue.mpg.de/media/upload/architecture.png" height="400" />
+    <img src="https://icon.is.tue.mpg.de/media/upload/architecture.png" width="800" />
 </p>
 
 The ICON architecture consists of two parts, with an optional optimisation loop:
@@ -42,13 +42,13 @@ Using this architecture, we can begin building an [octree](https://iq.opengenus.
 Here I will provide a few talking points from my results using ICON.
 
 <p align="center">
-    <img src="resources/videos/results.gif" height="300" />
+    <img src="resources/videos/results.gif" width="800" />
 </p>
 
 From the above gif, we can see that the results for a well lit, well positioned subject are reasonable (aside from the missing limb, discussed in limitations section)
 <p align="center">
-    <img src="resources/videos/side.gif" height="400" />
-    <img src="resources/videos/front.gif" height="400" /> 
+    <img src="resources/videos/side.gif" width="200" />
+    <img src="resources/videos/front.gif" width="200" /> 
 </p>
 
 However, one result doesn't speak for an entire video sequence. After loading up Blender (I know the technical question said to use Unity, it was too late to turn back when I realised!) and importing 35 Skateboarder models, I realised one of the disadvantages of this network was the lack consistency in scale / position between successive models. I had to manually adjust each of them so the video could run smoothly.
@@ -56,7 +56,7 @@ However, one result doesn't speak for an entire video sequence. After loading up
 You can tell from the above-left gif that, if viewing from the perspective of the camera, the motion looks very smooth. However, when panning 90 degrees away from that perspective, as shown in the above-right gif, the motion looks jagged. This is a natural consequence of using a single camera, as there are a bunch of positions a limb can be in that satisfy the 'silhouette' produced by the single camera. This issue will no doubt be mitigated by the inclusion of more views.
 
 <p align="center">
-    <img src="resources/videos/me.gif" height="300" />
+    <img src="resources/videos/me.gif" width="800" />
 </p>
 
 From the above gif, we can see that the model can capture a subject (me!):
@@ -78,8 +78,8 @@ The main error of this example is that, unfortunately, I'm not strong enough to 
 - Quality of output
     - Comparing directly to PIFu's architecture, the inclusion of a mesh-based statistical model (PyMAF) in ICON greatly reduces 'non-human' artifacts, at the expense of having a generic look to all outputs (further discussed in limitations section). This also combats the effect of image blur.
         <p float="left">
-            <img src="resources/eval-images/blur/1.png" height="100" />
-            <img src="resources/eval-images/blur/2.png" height="100" /> 
+            <img src="resources/eval-images/blur/1.png" width="100" />
+            <img src="resources/eval-images/blur/2.png" width="100" /> 
         </p>
 ## Limitations of ICON (Specific to Metacast)
 - The first obvious limitation - ICON is far from a real-time solution, standing at 30.7 seconds per frame. Through omission of the normal map optimisation loop, the iteration time for a single frame was greatly reduced to 4.4s (using Colab's Tesla-P100 instances), with only a slight difference in model quality.
@@ -91,13 +91,13 @@ The main error of this example is that, unfortunately, I'm not strong enough to 
 
 - SMPL-body prediction relies on PyMAF, which exposes it to PyMAF failure cases. In their words - "Though PyMAF can improve the alignment of some body parts, it remains challenging for PyMAF to correct those body parts with severe deviations, heavy occlusions, or ambiguous limb connections". For instance, occluded regions can sometimes cause missing limbs  
         <p float="left">
-            <img src="resources/eval-images/missing_limbs/2.png" height="300" />
-            <img src="resources/eval-images/missing_limbs/1.png" height="300" /> 
+            <img src="resources/eval-images/missing_limbs/2.png" width="200" />
+            <img src="resources/eval-images/missing_limbs/1.png" width="200" /> 
         </p>
     
 - From what I gathered from the paper, ICON concerns itself only with geometry, and leaves the texturing to [SCANimate](https://scanimate.is.tue.mpg.de/). However, when viewing the .obj files in my system, I can clearly see a textured 'refine' model. There is no accompanying .mtl file, and when I open the 'refine' .obj in a text editor, there is no mention of materials, so I'm not quite sure whats going on there at the moment!
     <p float="left">
-            <img src="resources/eval-images/colour.png" height="200"/>  
+            <img src="resources/eval-images/colour.png" width="300"/>  
     </p> 
 
 - (nitty-gritty) ICON assumes weak perspective cameras, which makes it susceptible to failure when subjects are close to the lens / distorted. In a UFC ring subjects might get very close to cameras.
@@ -107,7 +107,7 @@ The improvements that I mention in the limitations section are non-trivial, and 
 For this technical question, I will instead focus on mesh post-processing to obtain a simplified mesh surface whilst preserving as much original detail as possible. This will help to lesten the memory footprint of the generated .obj models. I will use the [Fast Quadric Mesh Simplifier](https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification) implementation present in the [ONet codebase](https://github.com/autonomousvision/occupancy_networks).
 
 <p align="center">
-    <img src="resources/eval-images/fqms/fqms.png" height="300" />
+    <img src="resources/eval-images/fqms/fqms.png" width="400" />
 </p>
 
 The above meshes are 5.1MB and 346KB in size respectively. You can find the 'fqms' files in the same directory as the ICON obj results.
