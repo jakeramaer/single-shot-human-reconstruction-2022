@@ -1,8 +1,7 @@
-# Technical Question Submission 
+# Exploring 3D Reconstruction: Single Shot Human Reconstruction from Video
 
-As a precursor, this was a great technical question! I had a lot of fun experimenting with different networks and playing around with the results.
-
-I do not own a CUDA enabled GPU, therefore my implementation runs via a Colab notebook:
+## Introduction
+As a passion project, I delved into the world of 3D human reconstruction from video footage, specifically focusing on reconstruction for sporting events. Since I don't own a CUDA-enabled GPU, my implementation runs via a Colab notebook:
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/17zqx4rOEP1035AjPfDE5JyaloIB06oq5?usp=sharing)
 
@@ -11,13 +10,13 @@ I do not own a CUDA enabled GPU, therefore my implementation runs via a Colab no
 </p>
 
 ## Survey of current SOTA
-The first phase of this question involved surveying the latest 3D human reconstruction networks, with the following conditions: 
-- The input being a single  mp4 file.
-- The output being a set of either 3D meshes or point clouds, ideally one for each frame.
+The first phase of this exploration involved surveying the latest 3D human reconstruction networks with specific conditions:
 
-I've worked previously with ONet, PIFu and NeRF networks. PIFuHD was my initial first guess at a potential solution to this question as it was trained for high-detail human reconstruction (including clothing). However, it is always worth a trip to google scholar to check forward citations. Through this I was able to find ICON (code released in Feb 2022). My reasons for selecting ICON as my chosen solution are as follows:
-- ICON has a full, well documented codebase, with access to a plug-and-play Colab notebook for easy testing.
-- The ICON paper demonstrates results that consistently outperform PIFu / PIFuHD, with particularly better generalisation to dramatic / athletic poses through use of local (rather than global) features.
+The input is a single mp4 file.
+The output is a set of either 3D meshes or point clouds, ideally one for each frame.
+Previously, I worked with ONet, PIFu, and NeRF networks. Initially, I considered PIFuHD for this project due to its high-detail human reconstruction capabilities. However, after researching forward citations on Google Scholar, I discovered ICON (code released in February 2022). My choice to use ICON stemmed from the following reasons:
+- ICON offers a complete, well-documented codebase, along with a user-friendly Colab notebook for easy testing.
+- The ICON paper shows results that consistently outperform PIFu/PIFuHD, especially in handling dramatic or athletic poses due to its use of local features rather than global ones.
 
 In the next section I will give a high-level overview of the theory behind ICON and its network architecture.
 ## ICON architecture rundown
@@ -38,8 +37,9 @@ The ICON architecture consists of two parts, with an optional optimisation loop:
     - A normal vector extracted from either the front or the back inferred clothed-body normal map, depending on visibility.
 
 Using this architecture, we can begin building an [octree](https://iq.opengenus.org/octree/) by querying different points, which can then be converted to a mesh via marching cubes. 
+
 ## Results
-Here I will provide a few talking points from my results using ICON.
+Here I will provide a few highlights from my results using ICON.
 
 <p align="center">
     <img src="resources/videos/results.gif" width="800" />
@@ -51,9 +51,9 @@ From the above gif, we can see that the results for a well lit, well positioned 
     <img src="resources/videos/front.gif" width="200" /> 
 </p>
 
-However, one result doesn't speak for an entire video sequence. After loading up Blender (I know the technical question said to use Unity, it was too late to turn back when I realised!) and importing 35 Skateboarder models, I realised one of the disadvantages of this network was the lack consistency in scale / position between successive models. I had to manually adjust each of them so the video could run smoothly.
+However, one result doesn't speak for an entire video sequence. After loading up Blender and importing 35 Skateboarder models, I realised one of the disadvantages of this network was the lack consistency in scale / position between successive models. I had to manually adjust each of them so the video could run smoothly.
 
-You can tell from the above-left gif that, if viewing from the perspective of the camera, the motion looks very smooth. However, when panning 90 degrees away from that perspective, as shown in the above-right gif, the motion looks jagged. This is a natural consequence of using a single camera, as there are a bunch of positions a limb can be in that satisfy the 'silhouette' produced by the single camera. This issue will no doubt be mitigated by the inclusion of more views.
+You can tell from the above-left GIF that, if viewing from the perspective of the camera, the motion looks very smooth. However, when panning 90 degrees away from that perspective, as shown in the above-right gif, the motion looks jagged. This is a natural consequence of using a single camera, as there are a bunch of positions a limb can be in that satisfy the 'silhouette' produced by the single camera. This issue will no doubt be mitigated by the inclusion of more views.
 
 <p align="center">
     <img src="resources/videos/me.gif" width="800" />
@@ -69,12 +69,12 @@ The main error of this example is that, unfortunately, I'm not strong enough to 
 
 <mark>For all results, please visit my [drive](https://drive.google.com/drive/folders/1xygUupnc9odJoez8_j0NtFabPszJr-bD?usp=sharing). Once uncompressed, you can find the output .objs under 'icon-filter/obj'. </mark>
 
-## Advantages of ICON (Specific to Metacast)
+## Advantages of ICON
 - Pose Generalisation
-    - Many of the datasets used to train human reconstruction networks (RenderPeople) are limited in pose variation. 
+    - Many of the datasets used to train human reconstruction networks (like RenderPeople) are limited in pose variation. 
     - Past SOTA networks suffered when exposed to 'dramatic' poses as they utilised global image features (i.e. taking the whole image into account), which overfit to poses seen during training. 
     - In contrast, ICON uses local features (generated from a combination of pose estimation and normal map prediction), which allows for better generalisation to unseen poses.
-    - As Metacast is attempting to reconstruct athletic / dynamic poses, ICON is the better suited network for generalisation and precision (not speed!).
+    - ICON is the better suited network for generalisation and precision (not speed!) when reconstructing athletic / dynamic poses.
 - Quality of output
     - Comparing directly to PIFu's architecture, the inclusion of a mesh-based statistical model (PyMAF) in ICON greatly reduces 'non-human' artifacts, at the expense of having a generic look to all outputs (further discussed in limitations section). This also combats the effect of image blur.
         <p float="left">
@@ -102,9 +102,7 @@ The main error of this example is that, unfortunately, I'm not strong enough to 
 
 - (nitty-gritty) ICON assumes weak perspective cameras, which makes it susceptible to failure when subjects are close to the lens / distorted. In a UFC ring subjects might get very close to cameras.
 ## Improvements Made
-The improvements that I mention in the limitations section are non-trivial, and require a whole rework of the model and / or the training data, which is beyond the scope of this exercise. 
-
-For this technical question, I will instead focus on mesh post-processing to obtain a simplified mesh surface whilst preserving as much original detail as possible. This will help to lesten the memory footprint of the generated .obj models. I will use the [Fast Quadric Mesh Simplifier](https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification) implementation present in the [ONet codebase](https://github.com/autonomousvision/occupancy_networks).
+I will focus on mesh post-processing to obtain a simplified mesh surface whilst preserving as much original detail as possible. This will help to lesten the memory footprint of the generated .obj models. I will use the [Fast Quadric Mesh Simplifier](https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification) implementation present in the [ONet codebase](https://github.com/autonomousvision/occupancy_networks).
 
 <p align="center">
     <img src="resources/eval-images/fqms/fqms.png" width="400" />
